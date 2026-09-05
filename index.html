@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AcademiaSync - Premium Student Result Management System</title>
+  
+  <!-- Modern Style Guide Sheets -->
+  <link rel="stylesheet" href="css/style.css">
+  
+  <!-- Global Error Diagnostics Script -->
+  <script>
+    window.onerror = function(message, source, lineno, colno, error) {
+      const errDiv = document.getElementById('error-diagnostics-banner');
+      if (errDiv) {
+        errDiv.style.display = 'block';
+        document.getElementById('err-msg').textContent = message;
+        document.getElementById('err-source').textContent = `${source.split('/').pop()} (Line ${lineno}:${colno})`;
+      }
+      return false; // Let browser print it in console too
+    };
+  </script>
+</head>
+<body>
+
+  <!-- Visual Script Error Banner -->
+  <div id="error-diagnostics-banner" style="display: none; background: #fef2f2; border-bottom: 3px solid #ef4444; color: #991b1b; padding: 1.25rem 2rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; position: sticky; top: 0; z-index: 9999;">
+    <div style="max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem;">
+      <div>
+        <strong style="font-size: 1.05rem; display: block; margin-bottom: 0.25rem;">⚠️ System Startup Error Captured!</strong>
+        <span>An error occurred while running the JavaScript controllers. Error: <code id="err-msg" style="background: rgba(0,0,0,0.05); padding: 0.1rem 0.4rem; border-radius: 4px;">-</code> in <code id="err-source" style="background: rgba(0,0,0,0.05); padding: 0.1rem 0.4rem; border-radius: 4px;">-</code></span>
+      </div>
+      <button onclick="this.parentElement.parentElement.style.display='none'" style="background: transparent; border: 1px solid currentColor; color: inherit; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: 600;">Dismiss</button>
+    </div>
+  </div>
+
+  <!-- App Main Core Shell -->
+  <div id="app-container">
+    
+    <!-- Glassmorphic Header Navigation Bar -->
+    <header class="main-header">
+      <div class="logo-container" id="nav-brand-logo" style="cursor: pointer;">
+        <div class="logo-icon">SR</div>
+        <div>
+          <h1 class="logo-text">AcademiaSync</h1>
+          <div class="logo-tagline">Result Management System</div>
+        </div>
+      </div>
+      
+      <div class="nav-controls">
+        <!-- Notice Board Shortcut Button -->
+        <button class="btn btn-outline" id="nav-btn-notices">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          <span>Notices</span>
+        </button>
+
+        <!-- Dark/Light Theme Switcher -->
+        <button class="theme-btn" id="theme-toggle-btn" aria-label="Toggle Theme">
+          <svg class="sun-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+        </button>
+
+        <!-- Login / Logged In Admin Actions -->
+        <button class="btn btn-secondary" id="nav-btn-portal-login">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path><polyline points="10 17 15 12 10 7"></polyline><line x1="15" y1="12" x2="3" y2="12"></line></svg>
+          <span id="portal-login-text">Admin Login</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Wrapper for dynamic route panels -->
+    <main class="main-wrapper">
+
+      <!-- ================= VIEW 1: HOME PAGE ================= -->
+      <section class="home-section" id="view-home">
+        <div class="hero-card">
+          <h1>Student Result Management System</h1>
+          <p>Welcome to AcademiaSync. Access administrative panels for institutional management, or retrieve official student academic marksheet scorecards instantly using your valid Roll ID.</p>
+          <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            <button class="btn btn-primary btn-lg" id="home-btn-check-result">Check Student Result</button>
+            <button class="btn btn-outline btn-lg" id="home-btn-notices">View Notice Board</button>
+          </div>
+        </div>
+
+        <div class="portal-grid">
+          <!-- Student Result Portal Trigger -->
+          <div class="portal-card portal-student" id="portal-card-student">
+            <div class="portal-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>
+            </div>
+            <h3>Student Portal</h3>
+            <p>Retrieve examination report cards, check overall performance percentages, and read public notices published by the administrator.</p>
+            <span class="btn btn-outline" style="width: 100%;">Access Student Portal</span>
+          </div>
+
+          <!-- Admin Portal Trigger -->
+          <div class="portal-card portal-admin" id="portal-card-admin">
+            <div class="portal-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="9" y1="9" x2="21" y2="9"></line><line x1="9" y1="15" x2="21" y2="15"></line></svg>
+            </div>
+            <h3>Administrator Portal</h3>
+            <p>Manage subject offerings, set up classes, associate subject combinations, register students, declare marks, and publish official notices.</p>
+            <span class="btn btn-outline" style="width: 100%;">Access Admin Portal</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 2: STUDENT PORTAL (SEARCH) ================= -->
+      <section class="student-search-container" id="view-student" style="display: none;">
+        <div class="card">
+          <div class="card-title">Search Report Card</div>
+          <div class="card-subtitle">Please select your class and enter your roll number</div>
+          
+          <form id="student-search-form">
+            <div class="form-group">
+              <label class="form-label" for="search-class-id">Assigned Class</label>
+              <select class="form-control" id="search-class-id" required>
+                <option value="">Select Class</option>
+                <!-- Dynamic List -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="search-roll-id">Roll Number / ID</label>
+              <input type="text" class="form-control" id="search-roll-id" placeholder="e.g. 1001" required autocomplete="off">
+            </div>
+            
+            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+              <button type="button" class="btn btn-secondary" style="flex: 1;" id="search-btn-back">Cancel</button>
+              <button type="submit" class="btn btn-primary" style="flex: 2;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                Search Result
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 3: MARKSHEET DISPLAY ================= -->
+      <section id="view-marksheet" style="display: none;">
+        <div class="marksheet-card">
+          <!-- Institutional Header -->
+          <div class="marksheet-header">
+            <div class="inst-logo">SR</div>
+            <div class="inst-details">
+              <h2 class="inst-name">AURA ACADEMY & SENIOR SECONDARY SCHOOL</h2>
+              <div class="inst-sub">Affiliation No. 1234567 | School Code: 998877</div>
+              <div class="inst-sub" style="font-size: 0.7rem; font-weight: 600;">Academic Year: 2026 - 2027</div>
+            </div>
+            <div style="width: 60px;"></div> <!-- Spacer -->
+          </div>
+
+          <div class="marksheet-title">Official Academic Performance Certificate</div>
+
+          <!-- Student Profile Bio Details -->
+          <div class="student-info-grid">
+            <div class="info-item">
+              <span class="info-label">Student Name:</span>
+              <span class="info-value" id="ms-student-name">-</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Roll Number:</span>
+              <span class="info-value" id="ms-roll-id">-</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Class Assigned:</span>
+              <span class="info-value" id="ms-class-name">-</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Date of Birth:</span>
+              <span class="info-value" id="ms-dob">-</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Contact Email:</span>
+              <span class="info-value" id="ms-email">-</span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">Contact Mobile:</span>
+              <span class="info-value" id="ms-mobile">-</span>
+            </div>
+          </div>
+
+          <!-- Subject Marks Grid Table -->
+          <table class="marks-table">
+            <thead>
+              <tr>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+                <th>Maximum Marks</th>
+                <th>Passing Marks</th>
+                <th>Marks Obtained</th>
+                <th>Letter Grade</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="ms-marks-table-body">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+
+          <!-- Scores Summary & Stamping -->
+          <div class="marksheet-summary">
+            <div class="scorecard-block">
+              <div class="score-row">
+                <span>Aggregate Marks:</span>
+                <span><strong id="ms-total-obtained">0</strong> / <span id="ms-total-max">0</span></span>
+              </div>
+              <div class="score-row">
+                <span>Overall Percentage:</span>
+                <span id="ms-percentage">0.00%</span>
+              </div>
+              <div class="score-row">
+                <span>Final Performance Grade:</span>
+                <span id="ms-overall-grade">-</span>
+              </div>
+            </div>
+            
+            <div class="status-badge-container">
+              <div class="result-status-stamp stamp-pass" id="ms-status-stamp">PASS</div>
+            </div>
+          </div>
+
+          <!-- Official Signatures layout -->
+          <div class="marksheet-signatures">
+            <div class="signature-line">Class Teacher Signature</div>
+            <div class="signature-line">Controller of Examinations</div>
+            <div class="signature-line">Principal Signature</div>
+          </div>
+        </div>
+
+        <div class="marksheet-actions">
+          <button class="btn btn-secondary" id="ms-btn-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            Go Back
+          </button>
+          <button class="btn btn-primary" id="ms-btn-print">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+            Print / Save PDF Marksheet
+          </button>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 4: PUBLIC NOTICE BOARD ================= -->
+      <section class="notices-container" id="view-notices" style="display: none;">
+        <div class="view-header">
+          <div class="view-title">
+            <h2>School Bulletin & Notices</h2>
+            <p>Read institutional circulars, examinations datesheets, and student result schedules</p>
+          </div>
+          <button class="btn btn-secondary" id="notices-btn-back">Go to Home</button>
+        </div>
+
+        <div class="notices-filter-bar">
+          <button class="btn btn-primary btn-sm filter-notice-btn" data-category="All">All Notices</button>
+          <button class="btn btn-outline btn-sm filter-notice-btn" data-category="Examination">Examinations</button>
+          <button class="btn btn-outline btn-sm filter-notice-btn" data-category="Result">Results</button>
+          <button class="btn btn-outline btn-sm filter-notice-btn" data-category="Event">Events & Fairs</button>
+          <button class="btn btn-outline btn-sm filter-notice-btn" data-category="General">General</button>
+        </div>
+
+        <div class="notice-list" id="public-notice-list-container">
+          <!-- Notices list rendered here -->
+        </div>
+      </section>
+
+      <!-- ================= VIEW 5: ADMIN LOGIN ================= -->
+      <section class="student-search-container" id="view-admin-login" style="display: none;">
+        <div class="card">
+          <div class="card-title">Admin Authentication</div>
+          <div class="card-subtitle">Please enter your management account credentials</div>
+          
+          <!-- Default Credentials Quick-Fill Banner -->
+          <div style="background: rgba(99, 102, 241, 0.08); border: 1px dashed rgba(99, 102, 241, 0.3); border-radius: 8px; padding: 0.85rem 1rem; margin-bottom: 1.25rem; display: flex; justify-content: space-between; align-items: center; gap: 0.75rem;">
+            <div>
+              <div style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 700; color: var(--color-primary-light, #818cf8);">Default Demo Credentials</div>
+              <div style="font-size: 0.85rem; color: var(--text-secondary, #94a3b8); margin-top: 0.15rem;">
+                Username: <strong style="color: var(--text-primary, #f8fafc);">admin</strong> &nbsp;|&nbsp; Password: <strong style="color: var(--text-primary, #f8fafc);">admin123</strong>
+              </div>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-autofill-admin" style="font-size: 0.75rem; padding: 0.35rem 0.65rem; white-space: nowrap;">
+              ⚡ Auto-Fill
+            </button>
+          </div>
+
+          <form id="admin-login-form">
+            <div class="form-group">
+              <label class="form-label" for="login-username">Admin Username or Email</label>
+              <input type="text" class="form-control" id="login-username" placeholder="e.g. admin" required autocomplete="username">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="login-password">Password</label>
+              <div style="position: relative; display: flex; align-items: center;">
+                <input type="password" class="form-control" id="login-password" placeholder="••••••••" required autocomplete="current-password" style="padding-right: 2.75rem; width: 100%;">
+                <button type="button" id="toggle-login-password" title="Show/Hide Password" style="position: absolute; right: 0.75rem; background: none; border: none; color: var(--text-muted, #64748b); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0.25rem;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+              </div>
+            </div>
+            
+            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+              <button type="button" class="btn btn-secondary" style="flex: 1;" id="login-btn-back">Cancel</button>
+              <button type="submit" class="btn btn-primary" style="flex: 2;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+                Secure Login
+              </button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+      <!-- ================= VIEW 6: ADMIN CONTROL PANEL WORKSPACE ================= -->
+      <section id="view-admin-layout" style="display: none; flex: 1;">
+        <div class="admin-layout">
+          
+          <!-- Left Sidebar Menu -->
+          <nav class="sidebar">
+            <ul class="sidebar-menu">
+              <li class="menu-item active" id="menu-btn-dashboard">
+                <button>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9"></rect><rect x="14" y="3" width="7" height="5"></rect><rect x="14" y="12" width="7" height="9"></rect><rect x="3" y="16" width="7" height="5"></rect></svg>
+                  <span>Dashboard</span>
+                </button>
+              </li>
+              <li class="menu-item" id="menu-btn-classes">
+                <button>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                  <span>Classes</span>
+                </button>
+              </li>
+              <li class="menu-item" id="menu-btn-subjects">
+                <button>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"></path><path d="M2 17l10 5 10-5"></path><path d="M2 12l10 5 10-5"></path></svg>
+                  <span>Subjects</span>
+                </button>
+              </li>
+              <li class="menu-item" id="menu-btn-combinations">
+                <button>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 16v1a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v1"></path><path d="M18 8h4a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-4"></path><circle cx="8" cy="12" r="2"></circle></svg>
+                  <span>Combinations</span>
+                </button>
+              </li>
+              <li class="menu-item" id="menu-btn-students">
+                <button>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                  <span>Students</span>
+                </button>
+              </li>
+              <li class="menu-item" id="menu-btn-results">
+                <button>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                  <span>Results Entry</span>
+                </button>
+              </li>
+              <li class="menu-item" id="menu-btn-notices">
+                <button>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                  <span>Notice Board</span>
+                </button>
+              </li>
+              <li class="menu-item" id="menu-btn-settings">
+                <button>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                  <span>System Settings</span>
+                </button>
+              </li>
+            </ul>
+
+            <!-- Mini User profile card -->
+            <div class="admin-profile-mini">
+              <div class="avatar-placeholder" id="admin-avatar">A</div>
+              <div class="profile-info">
+                <span class="profile-name" id="admin-profile-name">Administrator</span>
+                <span class="profile-role">srms-management</span>
+              </div>
+            </div>
+          </nav>
+
+          <!-- Right Content Panels Wrapper -->
+          <div class="admin-main">
+            
+            <!-- PANEL 1: ADMIN DASHBOARD PANEL -->
+            <div class="admin-panel" id="panel-dashboard">
+              <div class="view-header">
+                <div class="view-title">
+                  <h2>Analytics Dashboard</h2>
+                  <p>Welcome back! Here is a summary of AcademiaSync educational logs.</p>
+                </div>
+              </div>
+
+              <!-- Metrics cards -->
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <div class="stat-icon blue">🎓</div>
+                  <div class="stat-info">
+                    <span class="stat-value" id="stat-total-students">0</span>
+                    <span class="stat-label">Students</span>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-icon indigo">🏢</div>
+                  <div class="stat-info">
+                    <span class="stat-value" id="stat-total-classes">0</span>
+                    <span class="stat-label">Classes</span>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-icon green">📚</div>
+                  <div class="stat-info">
+                    <span class="stat-value" id="stat-total-subjects">0</span>
+                    <span class="stat-label">Subjects</span>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-icon amber">🎯</div>
+                  <div class="stat-info">
+                    <span class="stat-value" id="stat-total-results">0</span>
+                    <span class="stat-label">Results</span>
+                  </div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-icon rose">📈</div>
+                  <div class="stat-info">
+                    <span class="stat-value" id="stat-pass-rate">0%</span>
+                    <span class="stat-label">Pass Rate</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Graphic analytics section -->
+              <div class="dashboard-details-grid">
+                <!-- Class wise performance chart -->
+                <div class="chart-card">
+                  <h3>Class-wise Result Distribution & Pass Rates</h3>
+                  <div class="chart-container" id="dashboard-bars-container">
+                    <!-- Dynamic Bars -->
+                  </div>
+                </div>
+
+                <!-- Academic toppers list -->
+                <div class="chart-card">
+                  <h3>Academic Toppers (Mid-Term)</h3>
+                  <div id="dashboard-toppers-list" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
+                    <!-- Dynamically listed toppers -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANEL 2: CLASS MANAGEMENT PANEL -->
+            <div class="admin-panel" id="panel-classes" style="display: none;">
+              <div class="view-header">
+                <div class="view-title">
+                  <h2>Class Registry</h2>
+                  <p>Register and manage class grades and section configurations.</p>
+                </div>
+                <button class="btn btn-primary" id="classes-btn-add">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  Add Class
+                </button>
+              </div>
+
+              <div class="action-bar">
+                <div style="display: flex; gap: 1rem; flex: 1; flex-wrap: wrap;">
+                  <div class="search-box">
+                    <span class="search-box-icon">🔍</span>
+                    <input type="text" class="form-control" id="classes-search" placeholder="Search class, section, code...">
+                  </div>
+                  <div style="max-width: 200px; width: 100%;">
+                    <select class="form-control" id="classes-semester-filter">
+                      <option value="All">All Semesters</option>
+                      <option value="Semester 1">Semester 1</option>
+                      <option value="Semester 2">Semester 2</option>
+                      <option value="Semester 3">Semester 3</option>
+                      <option value="Semester 4">Semester 4</option>
+                      <option value="Semester 5">Semester 5</option>
+                      <option value="Semester 6">Semester 6</option>
+                      <option value="Semester 7">Semester 7</option>
+                      <option value="Semester 8">Semester 8</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Class Code</th>
+                      <th>Class Name</th>
+                      <th>Section</th>
+                      <th>Semester</th>
+                      <th>Created Date</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="classes-table-body">
+                    <!-- Dynamic classes row -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PANEL 3: SUBJECT MANAGEMENT PANEL -->
+            <div class="admin-panel" id="panel-subjects" style="display: none;">
+              <div class="view-header">
+                <div class="view-title">
+                  <h2>Subject Catalog</h2>
+                  <p>Set up institutional subjects, define code identifiers and grading parameters.</p>
+                </div>
+                <button class="btn btn-primary" id="subjects-btn-add">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  Add Subject
+                </button>
+              </div>
+
+              <div class="action-bar">
+                <div style="display: flex; gap: 1rem; flex: 1; flex-wrap: wrap;">
+                  <div class="search-box">
+                    <span class="search-box-icon">🔍</span>
+                    <input type="text" class="form-control" id="subjects-search" placeholder="Search subject name, code, or type...">
+                  </div>
+                  <div style="max-width: 200px; width: 100%;">
+                    <select class="form-control" id="subjects-type-filter">
+                      <option value="All">All Subject Types</option>
+                      <option value="Theory">Theory</option>
+                      <option value="Practical / Lab">Practical / Lab</option>
+                      <option value="Core">Core</option>
+                      <option value="Elective">Elective</option>
+                      <option value="Project / Viva">Project / Viva</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Code</th>
+                      <th>Subject Name</th>
+                      <th>Subject Type</th>
+                      <th>Credits</th>
+                      <th>Maximum Marks</th>
+                      <th>Passing Marks</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="subjects-table-body">
+                    <!-- Dynamic subjects rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PANEL 4: SUBJECT COMBINATION MAP PANEL -->
+            <div class="admin-panel" id="panel-combinations" style="display: none;">
+              <div class="view-header">
+                <div class="view-title">
+                  <h2>Subject Combination Assignment</h2>
+                  <p>Assign courses to classes and manage active teaching combinations.</p>
+                </div>
+                <button class="btn btn-primary" id="comb-btn-add">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  Assign Subject to Class
+                </button>
+              </div>
+
+              <div class="action-bar">
+                <div style="display: flex; gap: 1rem; flex: 1; flex-wrap: wrap;">
+                  <div class="search-box">
+                    <span class="search-box-icon">🔍</span>
+                    <input type="text" class="form-control" id="comb-search" placeholder="Search combinations...">
+                  </div>
+                  <div style="max-width: 200px; width: 100%;">
+                    <select class="form-control" id="comb-class-filter">
+                      <option value="All">All Classes</option>
+                      <!-- Dynamic options -->
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Class Name</th>
+                      <th>Subject Code</th>
+                      <th>Subject Name</th>
+                      <th>Status Badge</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="combinations-table-body">
+                    <!-- Dynamic combinations list -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PANEL 5: STUDENT MANAGEMENT PANEL -->
+            <div class="admin-panel" id="panel-students" style="display: none;">
+              <div class="view-header">
+                <div class="view-title">
+                  <h2>Student Roster</h2>
+                  <p>Register new student profiles and update existing enrollment data.</p>
+                </div>
+                <button class="btn btn-primary" id="students-btn-add">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  Register Student
+                </button>
+              </div>
+
+              <div class="action-bar">
+                <div style="display: flex; gap: 1rem; flex: 1; flex-wrap: wrap;">
+                  <div class="search-box">
+                    <span class="search-box-icon">🔍</span>
+                    <input type="text" class="form-control" id="students-search" placeholder="Search by name, roll ID, email...">
+                  </div>
+                  <div style="max-width: 200px; width: 100%;">
+                    <select class="form-control" id="students-class-filter">
+                      <option value="All">All Classes</option>
+                      <!-- Dynamic classes -->
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Roll ID</th>
+                      <th>Full Name</th>
+                      <th>Assigned Class</th>
+                      <th>Email ID</th>
+                      <th>Mobile No</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="students-table-body">
+                    <!-- Dynamic student rows -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PANEL 6: RESULT MANAGEMENT PANEL -->
+            <div class="admin-panel" id="panel-results" style="display: none;">
+              <div class="view-header">
+                <div class="view-title">
+                  <h2>Declared Results Log</h2>
+                  <p>Register examination grade metrics, enter scores, and edit declared marksheet results.</p>
+                </div>
+                <button class="btn btn-primary" id="results-btn-declare">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  Declare Result
+                </button>
+              </div>
+
+              <div class="action-bar">
+                <div style="display: flex; gap: 1rem; flex: 1; flex-wrap: wrap;">
+                  <div class="search-box">
+                    <span class="search-box-icon">🔍</span>
+                    <input type="text" class="form-control" id="results-search" placeholder="Search student name or roll ID...">
+                  </div>
+                  <div style="max-width: 200px; width: 100%;">
+                    <select class="form-control" id="results-class-filter">
+                      <option value="All">All Classes</option>
+                      <!-- Dynamic classes -->
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Roll ID</th>
+                      <th>Student Name</th>
+                      <th>Assigned Class</th>
+                      <th>Total Marks</th>
+                      <th>Percentage</th>
+                      <th>Grade</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="results-table-body">
+                    <!-- Dynamic results entries -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PANEL 7: NOTICE BOARD MANAGEMENT PANEL -->
+            <div class="admin-panel" id="panel-notices" style="display: none;">
+              <div class="view-header">
+                <div class="view-title">
+                  <h2>Notice Board Management</h2>
+                  <p>Post and manage announcements, academic notices, and scheduling details.</p>
+                </div>
+                <button class="btn btn-primary" id="notices-btn-add">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                  Post Notice
+                </button>
+              </div>
+
+              <div class="action-bar">
+                <div class="search-box">
+                  <span class="search-box-icon">🔍</span>
+                  <input type="text" class="form-control" id="admin-notices-search" placeholder="Search notice title or content...">
+                </div>
+              </div>
+
+              <div class="table-responsive">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Category</th>
+                      <th>Target</th>
+                      <th>Date Published</th>
+                      <th>Pinned</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="admin-notices-table-body">
+                    <!-- Dynamic notices roster -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- PANEL 8: SECURITY PROFILE & DATA CONTROL SETTINGS -->
+            <div class="admin-panel" id="panel-settings" style="display: none;">
+              <div class="view-header">
+                <div class="view-title">
+                  <h2>Profile & System Control Panel</h2>
+                  <p>Update credentials, configure database files, or wipe data logs back to demo defaults.</p>
+                </div>
+              </div>
+
+              <div class="dashboard-details-grid">
+                <!-- Change password module -->
+                <div class="chart-card">
+                  <h3>Change Security Password</h3>
+                  <form id="settings-password-form" style="margin-top: 1rem;">
+                    <div class="form-group">
+                      <label class="form-label" for="pass-old">Current Admin Password</label>
+                      <input type="password" class="form-control" id="pass-old" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="pass-new">New Account Password</label>
+                      <input type="password" class="form-control" id="pass-new" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-group">
+                      <label class="form-label" for="pass-confirm">Confirm New Password</label>
+                      <input type="password" class="form-control" id="pass-confirm" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="margin-top: 1.5rem; width: 100%;">Change Account Password</button>
+                  </form>
+                </div>
+
+                <!-- Database backups and wipes -->
+                <div class="chart-card" style="display: flex; flex-direction: column; gap: 1rem;">
+                  <h3>System & Data Management</h3>
+                  
+                  <div style="margin-top: 0.5rem;">
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                      Export the active local database to a JSON file format backup, or load an existing backup configuration.
+                    </p>
+                    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                      <button class="btn btn-secondary" id="settings-btn-export" style="flex: 1;">Export Data</button>
+                      <button class="btn btn-outline" id="settings-btn-import-trigger" style="flex: 1;">Import JSON</button>
+                      <input type="file" id="settings-import-file" accept=".json" style="display: none;">
+                    </div>
+                  </div>
+
+                  <hr style="border: 0; border-top: 1px solid var(--border-color);">
+
+                  <div>
+                    <h4 style="color: var(--danger); font-size: 0.95rem; margin-bottom: 0.5rem;">Factory Reset Options</h4>
+                    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">
+                      Wipe all customized class mappings, subject grades, notices, and registered students back to the initial pre-seeded demo state.
+                    </p>
+                    <button class="btn btn-danger" id="settings-btn-reset-demo" style="width: 100%;">Reset Demo Seed Data</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Page Footer -->
+    <footer class="main-footer">
+      <div>AcademiaSync Academic Management Engine &copy; 2026. Made with Vanilla styling.</div>
+    </footer>
+  </div>
+
+  <!-- =======================================================
+       DYNAMIC DIALOG MODALS
+  ======================================================= -->
+
+  <!-- 1. ADD/EDIT CLASS MODAL -->
+  <div class="modal-overlay" id="modal-class">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="class-modal-title">Add Class Configuration</h3>
+        <button class="modal-close" onclick="closeModal('modal-class')">&times;</button>
+      </div>
+      <form id="form-class">
+        <input type="hidden" id="class-modal-id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="class-name-input">Class / Course Name</label>
+            <input type="text" class="form-control" id="class-name-input" placeholder="e.g. Class 10 or B.Tech" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="class-section-input">Section / Stream</label>
+            <input type="text" class="form-control" id="class-section-input" placeholder="e.g. Section A, CSE, or Science" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="class-semester-input">Semester</label>
+            <select class="form-control" id="class-semester-input" required>
+              <option value="Semester 1">Semester 1 (1st Sem)</option>
+              <option value="Semester 2">Semester 2 (2nd Sem)</option>
+              <option value="Semester 3">Semester 3 (3rd Sem)</option>
+              <option value="Semester 4">Semester 4 (4th Sem)</option>
+              <option value="Semester 5">Semester 5 (5th Sem)</option>
+              <option value="Semester 6">Semester 6 (6th Sem)</option>
+              <option value="Semester 7">Semester 7 (7th Sem)</option>
+              <option value="Semester 8">Semester 8 (8th Sem)</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-class')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="class-modal-submit-btn">Save Class</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. ADD/EDIT SUBJECT MODAL -->
+  <div class="modal-overlay" id="modal-subject">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="subject-modal-title">Add Subject Details</h3>
+        <button class="modal-close" onclick="closeModal('modal-subject')">&times;</button>
+      </div>
+      <form id="form-subject">
+        <input type="hidden" id="subject-modal-id">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="subj-name-input">Subject Name</label>
+            <input type="text" class="form-control" id="subj-name-input" placeholder="e.g. Mathematics" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="subj-code-input">Subject Code</label>
+            <input type="text" class="form-control" id="subj-code-input" placeholder="e.g. MATH101" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="subj-type-input">Subject Type</label>
+            <select class="form-control" id="subj-type-input" required>
+              <option value="Theory">Theory (Lecture/Written)</option>
+              <option value="Practical / Lab">Practical / Laboratory</option>
+              <option value="Core">Core Compulsory Subject</option>
+              <option value="Elective">Elective / Optional Subject</option>
+              <option value="Project / Viva">Project / Viva Voce</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="subj-credits-input">No. of Credits (1 - 6)</label>
+            <select class="form-control" id="subj-credits-input" required>
+              <option value="1">1 Credit</option>
+              <option value="2">2 Credits</option>
+              <option value="3">3 Credits</option>
+              <option value="4" selected>4 Credits (Standard)</option>
+              <option value="5">5 Credits</option>
+              <option value="6">6 Credits</option>
+            </select>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="subj-max-input">Maximum Marks</label>
+              <input type="number" class="form-control" id="subj-max-input" placeholder="100" min="1" max="1000" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="subj-pass-input">Passing Marks</label>
+              <input type="number" class="form-control" id="subj-pass-input" placeholder="33" min="1" max="1000" required>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-subject')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="subject-modal-submit-btn">Save Subject</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. ASSIGN COMBINATION MODAL -->
+  <div class="modal-overlay" id="modal-combination">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Assign Subject to Class</h3>
+        <button class="modal-close" onclick="closeModal('modal-combination')">&times;</button>
+      </div>
+      <form id="form-combination">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="comb-class-select">Select Class</label>
+            <select class="form-control" id="comb-class-select" required>
+              <option value="">Choose Class</option>
+              <!-- Dynamic classes options -->
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="comb-subj-select">Select Subject</label>
+            <select class="form-control" id="comb-subj-select" required>
+              <option value="">Choose Subject</option>
+              <!-- Dynamic subjects options -->
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-combination')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Link Mapping</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 4. ADD/EDIT STUDENT REGISTER MODAL -->
+  <div class="modal-overlay" id="modal-student">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 id="student-modal-title">Student Registration</h3>
+        <button class="modal-close" onclick="closeModal('modal-student')">&times;</button>
+      </div>
+      <form id="form-student">
+        <input type="hidden" id="student-modal-id">
+        <div class="modal-body">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="stud-roll-input">Roll Number / Unique ID</label>
+              <input type="text" class="form-control" id="stud-roll-input" placeholder="e.g. 1005" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="stud-class-select">Assign Class</label>
+              <select class="form-control" id="stud-class-select" required>
+                <option value="">Select Class</option>
+                <!-- Dynamic options -->
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="stud-name-input">Full Name</label>
+            <input type="text" class="form-control" id="stud-name-input" placeholder="e.g. Priyanjali Sen" required>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="stud-gender-select">Gender</label>
+              <select class="form-control" id="stud-gender-select" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="stud-dob-input">Date of Birth</label>
+              <input type="date" class="form-control" id="stud-dob-input" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="stud-email-input">Email Address</label>
+            <input type="email" class="form-control" id="stud-email-input" placeholder="student@example.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="stud-mobile-input">Mobile Contact No</label>
+            <input type="tel" class="form-control" id="stud-mobile-input" placeholder="e.g. 9876543210" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="stud-status-select">Status Mode</label>
+            <select class="form-control" id="stud-status-select">
+              <option value="Active">Active</option>
+              <option value="Inactive">Inactive</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-student')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="student-modal-submit-btn">Register Student</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 5. DECLARE / EDIT RESULT MARKS ENTRY MODAL -->
+  <div class="modal-overlay" id="modal-result">
+    <div class="modal-container" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 id="result-modal-title">Declare Student Result Marks</h3>
+        <button class="modal-close" onclick="closeModal('modal-result')">&times;</button>
+      </div>
+      <form id="form-result">
+        <input type="hidden" id="result-modal-id"> <!-- Result DB row ID if editing -->
+        
+        <div class="modal-body">
+          <!-- Selection (Only visible when declaring, locked when editing) -->
+          <div id="result-selection-block">
+            <div class="form-group">
+              <label class="form-label" for="res-class-select">Select Class</label>
+              <select class="form-control" id="res-class-select" required>
+                <option value="">Choose Class</option>
+                <!-- Dynamic options -->
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="res-student-select">Select Student</label>
+              <select class="form-control" id="res-student-select" required disabled>
+                <option value="">Select Student (Choose class first)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Static display when editing -->
+          <div id="result-static-block" style="display: none; background-color: var(--bg-tertiary); padding: 1rem; border-radius: var(--radius-md); margin-bottom: 1.25rem;">
+            <div style="font-weight: 600; font-size: 1rem;" id="res-static-name">-</div>
+            <div style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.25rem;">
+              Roll ID: <span id="res-static-roll">-</span> | Class: <span id="res-static-class">-</span>
+            </div>
+          </div>
+
+          <!-- Marks entry row list (populated dynamically via script) -->
+          <h4 style="margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 0.95rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">Subject Marks Grid Entry</h4>
+          
+          <div id="res-marks-rows-container">
+            <!-- Dynamic Subject fields -->
+            <div style="text-align: center; color: var(--text-tertiary); padding: 1.5rem 0;" id="res-marks-placeholder-text">
+              Please choose a student to view linked active subject fields.
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-result')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="result-modal-submit-btn">Declare Result</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 6. ADD DYNAMIC NOTICE MODAL -->
+  <div class="modal-overlay" id="modal-notice">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3>Publish School Announcement</h3>
+        <button class="modal-close" onclick="closeModal('modal-notice')">&times;</button>
+      </div>
+      <form id="form-notice">
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label" for="notice-title-input">Notice Title</label>
+            <input type="text" class="form-control" id="notice-title-input" placeholder="e.g. Mid-Term Examination Postponement" required>
+          </div>
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="form-label" for="notice-cat-select">Category / Tag</label>
+              <select class="form-control" id="notice-cat-select">
+                <option value="General">General</option>
+                <option value="Examination">Examination</option>
+                <option value="Result">Result</option>
+                <option value="Event">Event & Fairs</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="notice-target-select">Target Audience</label>
+              <select class="form-control" id="notice-target-select">
+                <option value="All">All</option>
+                <option value="Students">Students Only</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="notice-content-input">Notice Content Details</label>
+            <textarea class="form-control" id="notice-content-input" rows="5" placeholder="Enter comprehensive circular details here..." required></textarea>
+          </div>
+          <div class="form-group" style="display: flex; align-items: center; gap: 0.5rem; margin-top: 1rem;">
+            <input type="checkbox" id="notice-pin-input">
+            <label for="notice-pin-input" style="font-size: 0.9rem; font-weight: 500; cursor: pointer; user-select: none;">Pin this notice on top of list</label>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('modal-notice')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Publish Announcement</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 7. CUSTOM ALERT / CONFIRMATION MODAL -->
+  <div class="modal-overlay" id="modal-confirm">
+    <div class="modal-container" style="max-width: 400px;">
+      <div class="modal-header">
+        <h3 id="confirm-title">Warning Dialog</h3>
+        <button class="modal-close" onclick="closeModal('modal-confirm')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <p id="confirm-message" style="font-size: 0.95rem; color: var(--text-secondary);">-</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-confirm')">Cancel</button>
+        <button type="button" class="btn btn-danger" id="confirm-submit-btn">Yes, Delete</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Real-time dynamic notifications container -->
+  <div id="toast-container"></div>
+
+  <!-- =======================================================
+       SYSTEM CONTROLLER LOGIC SCRIPTS
+  ======================================================= -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

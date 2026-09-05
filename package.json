@@ -1,0 +1,19 @@
+{
+  "name": "academiasync-server",
+  "version": "1.0.0",
+  "description": "Node.js Express and SQLite server backend for Student Result Management System",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "start:firebase": "node server.js --firebase",
+    "seed:firebase": "node seed-firebase.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "firebase-admin": "^12.0.0",
+    "sqlite3": "^5.1.7"
+  },
+  "author": "AcademiaSync Team",
+  "license": "ISC"
+}
