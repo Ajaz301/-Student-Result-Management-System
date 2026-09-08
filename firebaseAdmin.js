@@ -27,7 +27,17 @@ function initFirebase() {
       credential = admin.credential.cert(serviceAccount);
       console.log(`[Firebase Admin] Found service account key at: ${KEY_FILE_PATH}`);
     } else if (process.env.FIREBASE_CONFIG_JSON) {
-      const serviceAccount = JSON.parse(process.env.FIREBASE_CONFIG_JSON);
+      let rawConfig = process.env.FIREBASE_CONFIG_JSON.trim();
+      let serviceAccount;
+      try {
+        serviceAccount = JSON.parse(rawConfig);
+      } catch (e) {
+        try {
+          serviceAccount = JSON.parse(Buffer.from(rawConfig, 'base64').toString('utf8'));
+        } catch (e2) {
+          throw new Error('Could not parse FIREBASE_CONFIG_JSON: ' + e.message);
+        }
+      }
       credential = admin.credential.cert(serviceAccount);
       console.log(`[Firebase Admin] Using FIREBASE_CONFIG_JSON environment variable.`);
     } else if (process.env.GOOGLE_APPLICATION_CREDENTIALS && fs.existsSync(process.env.GOOGLE_APPLICATION_CREDENTIALS)) {

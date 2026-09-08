@@ -1594,13 +1594,23 @@ app.get('*', (req, res) => {
 
 // Launch server (only when executed directly, not when imported by Vercel serverless functions)
 if (require.main === module) {
-  app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`===================================================`);
     console.log(` AcademiaSync API Server is running locally!`);
     console.log(` URL: http://localhost:${PORT}`);
     console.log(` Mode: ${isFirebaseReady() ? 'Google Cloud Firebase Firestore' : 'SQLite Local Fallback'}`);
     console.log(` Press Ctrl+C to terminate the server.`);
     console.log(`===================================================`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      console.error(`\n❌ Error: Port ${PORT} is already in use!`);
+      console.error(`👉 Close any existing running terminal or kill node processes.`);
+      console.error(`👉 Or run with another port: $env:PORT=3001; node server.js\n`);
+    } else {
+      console.error('\n❌ Server error:', err.message, '\n');
+    }
   });
 }
 
