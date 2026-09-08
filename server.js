@@ -14,7 +14,21 @@ const firebaseService = require('./firebaseService');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const DB_FILE = path.join(__dirname, 'database.db');
+
+// Vercel serverless environment support for SQLite database
+const isVercel = process.env.VERCEL === '1' || !!process.env.NOW_REGION || !!process.env.VERCEL_ENV;
+let DB_FILE = path.join(__dirname, 'database.db');
+if (isVercel) {
+  const tmpDb = path.join('/tmp', 'database.db');
+  if (!fs.existsSync(tmpDb) && fs.existsSync(DB_FILE)) {
+    try {
+      fs.copyFileSync(DB_FILE, tmpDb);
+    } catch (e) {
+      console.warn("Could not copy database to /tmp:", e.message);
+    }
+  }
+  DB_FILE = tmpDb;
+}
 
 // Middleware
 app.use(cors());
@@ -1569,12 +1583,16 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Launch server
-app.listen(PORT, () => {
-  console.log(`===================================================`);
-  console.log(` AcademiaSync API Server is running locally!`);
-  console.log(` URL: http://localhost:${PORT}`);
-  console.log(` Mode: ${isFirebaseReady() ? 'Google Cloud Firebase Firestore' : 'SQLite Local Fallback'}`);
-  console.log(` Press Ctrl+C to terminate the server.`);
-  console.log(`===================================================`);
-});
+// Launch server (only when executed directly, not when imported by Vercel serverless functions)
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`===================================================`);
+    console.log(` AcademiaSync API Server is running locally!`);
+    console.log(` URL: http://localhost:${PORT}`);
+    console.log(` Mode: ${isFirebaseReady() ? 'Google Cloud Firebase Firestore' : 'SQLite Local Fallback'}`);
+    console.log(` Press Ctrl+C to terminate the server.`);
+    console.log(`===================================================`);
+  });
+}
+
+module.exports = app;
