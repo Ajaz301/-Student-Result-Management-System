@@ -48,6 +48,15 @@ if (USE_FIREBASE) {
 }
 console.log('---------------------------------------------------');
 
+// Health / Status Check Endpoint
+app.get('/api/status', (req, res) => {
+  res.json({
+    status: 'online',
+    mode: isFirebaseReady() ? 'Firebase Cloud Firestore' : 'SQLite Local',
+    time: new Date().toISOString()
+  });
+});
+
 // SQLite connection (always active as primary engine or zero-downtime local fallback)
 let sqliteDb = null;
 sqliteDb = new sqlite3.Database(DB_FILE, (err) => {
