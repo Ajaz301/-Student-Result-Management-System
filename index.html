@@ -398,48 +398,143 @@
 
             <!-- PANEL 1: ADMIN DASHBOARD PANEL -->
             <div class="admin-panel" id="panel-dashboard">
-              <div class="view-header">
+              <div class="view-header dashboard-header">
                 <div class="view-title">
-                  <h2>Analytics Dashboard</h2>
-                  <p>Welcome back! Here is a summary of AcademiaSync educational logs.</p>
+                  <div class="admin-session-pill">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                    Live Academic Session 2026-2027
+                  </div>
+                  <h2>Executive Command Center</h2>
+                  <p>Welcome back, Administrator! Here is your real-time institutional overview & performance metrics.</p>
+                </div>
+                <div class="dashboard-header-actions">
+                  <button class="btn btn-secondary" onclick="renderAdminPanel('results'); document.getElementById('results-btn-declare')?.click();" title="Declare New Student Results">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                    Declare Result
+                  </button>
+                  <button class="btn btn-primary" onclick="renderAdminPanel('students'); document.getElementById('students-btn-add')?.click();" title="Register New Student Profile">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    Add Student
+                  </button>
                 </div>
               </div>
 
-              <!-- Metrics cards -->
+              <!-- Admin Quick Navigation Shortcuts Grid -->
+              <div class="admin-shortcuts-grid">
+                <div class="shortcut-card" onclick="renderAdminPanel('students')" role="button" tabindex="0">
+                  <div class="shortcut-icon blue">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                  </div>
+                  <div class="shortcut-text">
+                    <strong>Student Registry</strong>
+                    <span>Manage enrollment & records</span>
+                  </div>
+                  <div class="shortcut-arrow">→</div>
+                </div>
+
+                <div class="shortcut-card" onclick="renderAdminPanel('classes')" role="button" tabindex="0">
+                  <div class="shortcut-icon indigo">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                  </div>
+                  <div class="shortcut-text">
+                    <strong>Academic Classes</strong>
+                    <span>Sections & curricula</span>
+                  </div>
+                  <div class="shortcut-arrow">→</div>
+                </div>
+
+                <div class="shortcut-card" onclick="renderAdminPanel('results')" role="button" tabindex="0">
+                  <div class="shortcut-icon amber">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                  </div>
+                  <div class="shortcut-text">
+                    <strong>Exam Results</strong>
+                    <span>Declare & publish marks</span>
+                  </div>
+                  <div class="shortcut-arrow">→</div>
+                </div>
+
+                <div class="shortcut-card" onclick="renderAdminPanel('notices')" role="button" tabindex="0">
+                  <div class="shortcut-icon green">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                  </div>
+                  <div class="shortcut-text">
+                    <strong>Notice Board</strong>
+                    <span>Broadcast bulletins</span>
+                  </div>
+                  <div class="shortcut-arrow">→</div>
+                </div>
+              </div>
+
+              <!-- High-contrast 3D Metrics Grid -->
               <div class="stats-grid">
-                <div class="stat-card">
-                  <div class="stat-icon blue">🎓</div>
+                <div class="stat-card stat-card-students">
+                  <div class="stat-icon blue">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c3 3 9 3 12 0v-5"></path></svg>
+                  </div>
                   <div class="stat-info">
+                    <div class="stat-header-row">
+                      <span class="stat-label">Students</span>
+                      <span class="stat-pill pill-blue">Active</span>
+                    </div>
                     <span class="stat-value" id="stat-total-students">0</span>
-                    <span class="stat-label">Students</span>
+                    <span class="stat-sub">Enrolled Scholars</span>
                   </div>
                 </div>
-                <div class="stat-card">
-                  <div class="stat-icon indigo">🏢</div>
+
+                <div class="stat-card stat-card-classes">
+                  <div class="stat-icon indigo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+                  </div>
                   <div class="stat-info">
+                    <div class="stat-header-row">
+                      <span class="stat-label">Classes</span>
+                      <span class="stat-pill pill-indigo">Sections</span>
+                    </div>
                     <span class="stat-value" id="stat-total-classes">0</span>
-                    <span class="stat-label">Classes</span>
+                    <span class="stat-sub">Grade Divisions</span>
                   </div>
                 </div>
-                <div class="stat-card">
-                  <div class="stat-icon green">📚</div>
+
+                <div class="stat-card stat-card-subjects">
+                  <div class="stat-icon green">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                  </div>
                   <div class="stat-info">
+                    <div class="stat-header-row">
+                      <span class="stat-label">Subjects</span>
+                      <span class="stat-pill pill-green">Catalog</span>
+                    </div>
                     <span class="stat-value" id="stat-total-subjects">0</span>
-                    <span class="stat-label">Subjects</span>
+                    <span class="stat-sub">Courses Configured</span>
                   </div>
                 </div>
-                <div class="stat-card">
-                  <div class="stat-icon amber">🎯</div>
+
+                <div class="stat-card stat-card-results">
+                  <div class="stat-icon amber">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="7"></circle><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline></svg>
+                  </div>
                   <div class="stat-info">
+                    <div class="stat-header-row">
+                      <span class="stat-label">Results</span>
+                      <span class="stat-pill pill-amber">Published</span>
+                    </div>
                     <span class="stat-value" id="stat-total-results">0</span>
-                    <span class="stat-label">Results</span>
+                    <span class="stat-sub">Scorecards Released</span>
                   </div>
                 </div>
-                <div class="stat-card">
-                  <div class="stat-icon rose">📈</div>
+
+                <div class="stat-card stat-card-pass">
+                  <div class="stat-icon rose">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+                  </div>
                   <div class="stat-info">
+                    <div class="stat-header-row">
+                      <span class="stat-label">Pass Rate</span>
+                      <span class="stat-pill pill-rose">Aggregate</span>
+                    </div>
                     <span class="stat-value" id="stat-pass-rate">0%</span>
-                    <span class="stat-label">Pass Rate</span>
+                    <span class="stat-sub">Overall Academic Success</span>
                   </div>
                 </div>
               </div>
@@ -448,7 +543,16 @@
               <div class="dashboard-details-grid">
                 <!-- Class wise performance chart -->
                 <div class="chart-card">
-                  <h3>Class-wise Result Distribution & Pass Rates</h3>
+                  <div class="chart-header">
+                    <div>
+                      <h3>Class-wise Result Distribution & Pass Rates</h3>
+                      <p class="chart-subtitle">Real-time breakdown of passing percentages across all active classes</p>
+                    </div>
+                    <span class="chart-badge">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                      Performance Analytics
+                    </span>
+                  </div>
                   <div class="chart-container" id="dashboard-bars-container">
                     <!-- Dynamic Bars -->
                   </div>
@@ -456,8 +560,16 @@
 
                 <!-- Academic toppers list -->
                 <div class="chart-card">
-                  <h3>Academic Toppers (Mid-Term)</h3>
-                  <div id="dashboard-toppers-list" style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1rem;">
+                  <div class="chart-header">
+                    <div>
+                      <h3>Academic Honor Roll</h3>
+                      <p class="chart-subtitle">Top rankers across declared scorecards</p>
+                    </div>
+                    <span class="chart-badge" style="background: rgba(245, 158, 11, 0.12); color: #f59e0b; border-color: rgba(245, 158, 11, 0.25);">
+                      🏆 Top Achievers
+                    </span>
+                  </div>
+                  <div id="dashboard-toppers-list">
                     <!-- Dynamically listed toppers -->
                   </div>
                 </div>

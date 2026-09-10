@@ -517,30 +517,27 @@ async function loadDashboardData() {
   toppersList.innerHTML = '';
 
   if (stats.toppers.length === 0) {
-    toppersList.innerHTML = '<div style="text-align: center; padding: 1.5rem; color: var(--text-tertiary); font-size: 0.9rem;">No results declared to evaluate toppers.</div>';
+    toppersList.innerHTML = '<div style="text-align: center; padding: 2rem; color: var(--text-tertiary); font-size: 0.88rem;">No results declared yet to evaluate toppers.</div>';
   } else {
     stats.toppers.forEach((topper, idx) => {
-      const row = document.createElement('div');
-      row.style.display = 'flex';
-      row.style.alignItems = 'center';
-      row.style.gap = '0.75rem';
-      row.style.padding = '0.5rem 0';
-      row.style.borderBottom = idx < stats.toppers.length - 1 ? '1px solid var(--border-color)' : 'none';
+      const card = document.createElement('div');
+      card.className = 'topper-item-card';
       
-      let rankEmoji = '🥇';
-      if (idx === 1) rankEmoji = '🥈';
-      if (idx === 2) rankEmoji = '🥉';
-      if (idx > 2) rankEmoji = '⭐';
+      let rankClass = 'rank-standard';
+      let rankContent = `#${idx + 1}`;
+      if (idx === 0) { rankClass = 'rank-gold'; rankContent = '🥇'; }
+      else if (idx === 1) { rankClass = 'rank-silver'; rankContent = '🥈'; }
+      else if (idx === 2) { rankClass = 'rank-bronze'; rankContent = '🥉'; }
 
-      row.innerHTML = `
-        <div style="font-size: 1.25rem;">${rankEmoji}</div>
-        <div style="flex: 1;">
-          <div style="font-weight: 600; font-size: 0.9rem;">${topper.studentName}</div>
-          <div style="font-size: 0.75rem; color: var(--text-secondary);">Class: ${topper.className} | Roll: ${topper.rollId}</div>
+      card.innerHTML = `
+        <div class="topper-rank-badge ${rankClass}">${rankContent}</div>
+        <div class="topper-details">
+          <div class="topper-name">${topper.studentName}</div>
+          <div class="topper-meta">Class: <strong>${topper.className}</strong> • Roll: <strong>${topper.rollId}</strong></div>
         </div>
-        <div style="font-weight: 700; color: var(--primary); font-size: 0.95rem;">${topper.percentage}%</div>
+        <div class="topper-score-badge">${topper.percentage}%</div>
       `;
-      toppersList.appendChild(row);
+      toppersList.appendChild(card);
     });
   }
 }
