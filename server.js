@@ -33,7 +33,8 @@ if (isVercel) {
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(__dirname)); // Serve static files directly from workspace
+app.use(express.static(path.join(__dirname, 'public'))); // Serve static files from public directory
+app.use(express.static(__dirname)); // Fallback to root directory
 
 // Initialize Firebase Admin (if serviceAccountKey.json is available)
 const fbInitResult = initFirebase();
@@ -1589,6 +1590,10 @@ app.post('/api/settings/reset', async (req, res) => {
 
 // Fallback: send index.html for all page requests (SPA support)
 app.get('*', (req, res) => {
+  const publicIndex = path.join(__dirname, 'public', 'index.html');
+  if (fs.existsSync(publicIndex)) {
+    return res.sendFile(publicIndex);
+  }
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 

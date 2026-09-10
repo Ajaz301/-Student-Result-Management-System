@@ -4,7 +4,6 @@
   "description": "Node.js Express and SQLite server backend for Student Result Management System",
   "main": "server.js",
   "scripts": {
-    "build": "echo 'Build complete'",
     "start": "node server.js",
     "start:firebase": "node server.js --firebase",
     "seed:firebase": "node seed-firebase.js"

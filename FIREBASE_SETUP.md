@@ -1,8 +1,8 @@
-# 🔥 Connecting Student Result Management System to Google Cloud Firebase
+# 🔥 Connecting Student Result Management System to Google Cloud Firebase & Vercel
 
-This project is configured with a **Node.js Express + Firebase Admin SDK** architecture connecting to **Google Cloud Firestore Database**.
+This project is configured with a **Node.js Express + Firebase Admin SDK** architecture connecting to **Google Cloud Firestore Database**, optimized for both local development and **Vercel Serverless** production deployment.
 
-Follow the simple step-by-step instructions below to connect your Firebase project.
+Follow the simple step-by-step instructions below to connect your Firebase project and deploy to Vercel.
 
 ---
 
@@ -69,7 +69,7 @@ You will see output confirming:
 
 ---
 
-## 🚀 Step 5: Start the Firebase-Connected Application
+## 🚀 Step 5: Start the Application Locally
 
 Start your application server:
 
@@ -88,9 +88,24 @@ Your server will output:
 
 ---
 
+## ☁️ Step 6: Deploying to Vercel
+
+When deploying to Vercel:
+
+1. Push your latest code to your **GitHub** repository (the `public/` directory and `vercel.json` are pre-configured).
+2. Go to your [Vercel Dashboard](https://vercel.com/) -> Select your project.
+3. Go to **Settings** -> **Environment Variables**.
+4. Add a new variable:
+   - **Key**: `FIREBASE_CONFIG_JSON`
+   - **Value**: Open your `serviceAccountKey.json` on your computer, copy the entire JSON content (or single-line JSON string), and paste it here.
+5. Click **Save** and trigger a **Redeploy** (Deployments -> Redeploy).
+6. Your live Vercel app will now load CSS, JavaScript, and connect directly to your Google Cloud Firestore database!
+
+---
+
 ## 🌐 Testing the Integration
 
-1. Open your browser at: `http://localhost:3000`
+1. Open your application (locally at `http://localhost:3000` or on your Vercel URL).
 2. **Student Portal**: Check results for Roll ID `1001` (Class 10 - Section A) or `1101` (Class 11 - Science-A).
 3. **Admin Portal**:
    - Username: `admin`
@@ -101,6 +116,7 @@ Your server will output:
 
 ## 💡 Architecture & Security Highlights
 
-- **Firebase Admin SDK**: Operates securely in the backend without exposing raw Firestore API keys or security rules to the browser.
-- **Dual-Engine Auto-Fallback**: If `serviceAccountKey.json` is not present, the app runs gracefully in local SQLite mode.
-- **API Status Endpoint**: You can check the live database engine anytime at `http://localhost:3000/api/status`.
+- **Vercel Static Asset Distribution**: All frontend assets are served from the `public/` directory across Vercel's global Edge CDN for high performance and zero syntax errors.
+- **Firebase Admin SDK**: Operates securely in backend serverless functions without exposing raw private keys or database rules to the browser.
+- **Dual-Engine Auto-Fallback**: If `serviceAccountKey.json` or `FIREBASE_CONFIG_JSON` is not configured, the app runs gracefully with a local database fallback.
+- **API Status Endpoint**: You can check the live database engine anytime at `https://your-domain.vercel.app/api/status`.
