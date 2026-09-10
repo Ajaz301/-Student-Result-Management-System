@@ -84,48 +84,51 @@
         <div class="portal-grid">
           <!-- Student Result Portal Trigger -->
           <div class="portal-card portal-student" id="portal-card-student">
-            <div class="portal-icon">
+            <div class="portal-badge badge-student">🎓 Student Space</div>
+            <div class="portal-icon icon-student">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"></path><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"></path></svg>
             </div>
             <h3>Student Portal</h3>
             <p>Retrieve examination report cards, check overall performance percentages, and read public notices published by the administrator.</p>
-            <span class="btn btn-outline" style="width: 100%;">Access Student Portal</span>
+            <span class="btn btn-student" style="width: 100%;">Access Student Portal &rarr;</span>
           </div>
 
           <!-- Admin Portal Trigger -->
           <div class="portal-card portal-admin" id="portal-card-admin">
-            <div class="portal-icon">
+            <div class="portal-badge badge-admin">🛡️ Admin Console (Restricted)</div>
+            <div class="portal-icon icon-admin">
               <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="9" y1="9" x2="21" y2="9"></line><line x1="9" y1="15" x2="21" y2="15"></line></svg>
             </div>
             <h3>Administrator Portal</h3>
             <p>Manage subject offerings, set up classes, associate subject combinations, register students, declare marks, and publish official notices.</p>
-            <span class="btn btn-outline" style="width: 100%;">Access Admin Portal</span>
+            <span class="btn btn-admin" style="width: 100%;">Access Admin Portal &rarr;</span>
           </div>
         </div>
       </section>
 
       <!-- ================= VIEW 2: STUDENT PORTAL (SEARCH) ================= -->
       <section class="student-search-container" id="view-student" style="display: none;">
-        <div class="card">
+        <div class="card card-student-theme">
+          <div class="student-header-tag">🎓 Student Academic Records Lookup</div>
           <div class="card-title">Search Report Card</div>
           <div class="card-subtitle">Please select your class and enter your roll number</div>
           
           <form id="student-search-form">
             <div class="form-group">
               <label class="form-label" for="search-class-id">Assigned Class</label>
-              <select class="form-control" id="search-class-id" required>
+              <select class="form-control student-input" id="search-class-id" required>
                 <option value="">Select Class</option>
                 <!-- Dynamic List -->
               </select>
             </div>
             <div class="form-group">
               <label class="form-label" for="search-roll-id">Roll Number / ID</label>
-              <input type="text" class="form-control" id="search-roll-id" placeholder="e.g. 1001" required autocomplete="off">
+              <input type="text" class="form-control student-input" id="search-roll-id" placeholder="e.g. 1001" required autocomplete="off">
             </div>
             
             <div style="margin-top: 2rem; display: flex; gap: 1rem;">
               <button type="button" class="btn btn-secondary" style="flex: 1;" id="search-btn-back">Cancel</button>
-              <button type="submit" class="btn btn-primary" style="flex: 2;">
+              <button type="submit" class="btn btn-student" style="flex: 2;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 Search Result
               </button>
@@ -263,7 +266,8 @@
 
       <!-- ================= VIEW 5: ADMIN LOGIN ================= -->
       <section class="student-search-container" id="view-admin-login" style="display: none;">
-        <div class="card">
+        <div class="card card-admin-theme">
+          <div class="admin-header-tag">🔐 Restricted Institutional Access</div>
           <div class="card-title">Admin Authentication</div>
           <div class="card-subtitle">Please enter your management account credentials</div>
           
@@ -289,7 +293,7 @@
               <label class="form-label" for="login-password">Password</label>
               <div style="position: relative; display: flex; align-items: center;">
                 <input type="password" class="form-control" id="login-password" placeholder="••••••••" required autocomplete="current-password" style="padding-right: 2.75rem; width: 100%;">
-                <button type="button" id="toggle-login-password" title="Show/Hide Password" style="position: absolute; right: 0.75rem; background: none; border: none; color: var(--text-muted, #64748b); cursor: display: flex; align-items: center; justify-content: center; padding: 0.25rem;">
+                <button type="button" id="toggle-login-password" title="Show/Hide Password" style="position: absolute; right: 0.75rem; background: none; border: none; color: var(--text-muted, #64748b); cursor: pointer; display: flex; align-items: center; justify-content: center; padding: 0.25rem;">
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                 </button>
               </div>
@@ -297,7 +301,7 @@
             
             <div style="margin-top: 2rem; display: flex; gap: 1rem;">
               <button type="button" class="btn btn-secondary" style="flex: 1;" id="login-btn-back">Cancel</button>
-              <button type="submit" class="btn btn-primary" style="flex: 2;">
+              <button type="submit" class="btn btn-admin" style="flex: 2;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                 Secure Login
               </button>
@@ -376,6 +380,20 @@
           <!-- Right Content Panels Wrapper -->
           <div class="admin-main">
             
+            <!-- Dedicated Administrator Top Workspace Banner -->
+            <div class="admin-top-banner">
+              <div class="admin-banner-info">
+                <span class="admin-badge-pill">🛡️ SYSTEM ADMINISTRATION WORKSPACE</span>
+                <span class="admin-system-status">
+                  <span class="status-dot"></span>
+                  Console Active & Synced
+                </span>
+              </div>
+              <div style="font-size: 0.8rem; color: var(--text-tertiary); font-weight: 500;">
+                Institutional Authority: <strong style="color: var(--text-primary);">Aura Academy (2026-2027)</strong>
+              </div>
+            </div>
+
             <!-- PANEL 1: ADMIN DASHBOARD PANEL -->
             <div class="admin-panel" id="panel-dashboard">
               <div class="view-header">
