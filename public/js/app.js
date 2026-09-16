@@ -468,7 +468,7 @@ document.getElementById('admin-login-form').addEventListener('submit', async (e)
     await loadDashboardData();
   } else {
     const errorMsg = (typeof result === 'object' && result.message) ? result.message : 'Incorrect administrator username or password.';
-    showToast(`${errorMsg} Default login: admin / admin123`, 'danger');
+    showToast(errorMsg, 'danger');
   }
 });
 
