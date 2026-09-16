@@ -59,7 +59,7 @@ npm run seed:firebase
 ```
 
 You will see output confirming:
-- ✔ Administrator account created (`admin` / `admin123`)
+- ✔ Administrator account created (`admin` / `Admin@Academia2026!`)
 - ✔ 4 Classes created
 - ✔ 8 Subjects registered
 - ✔ Subject combinations linked
@@ -109,7 +109,7 @@ When deploying to Vercel:
 2. **Student Portal**: Check results for Roll ID `1001` (Class 10 - Section A) or `1101` (Class 11 - Science-A).
 3. **Admin Portal**:
    - Username: `admin`
-   - Password: `admin123`
+   - Password: `Admin@Academia2026!`
 4. Add new classes, subjects, student records, or publish marksheets directly — all data will sync in real-time to your **Firebase Cloud Firestore** database!
 
 ---

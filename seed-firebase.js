@@ -36,12 +36,12 @@ async function seedFirestore() {
     console.log('👤 Seeding Administrators...');
     const adminRef = await db.collection('admins').add({
       username: 'admin',
-      password: 'admin123',
+      password: 'Admin@Academia2026!',
       name: 'School Administrator',
       email: 'admin@srms-edu.org',
       created_at: new Date().toISOString()
     });
-    console.log(`   ✔ Admin seeded: admin / admin123 (Doc ID: ${adminRef.id})`);
+    console.log(`   ✔ Admin seeded: admin / Admin@Academia2026! (Doc ID: ${adminRef.id})`);
 
     // 2. Seed Classes
     console.log('🏫 Seeding Classes...');
@@ -366,7 +366,7 @@ async function seedFirestore() {
     console.log('   npm start');
     console.log('\nDefault Admin Credentials:');
     console.log('   Username: admin');
-    console.log('   Password: admin123\n');
+    console.log('   Password: Admin@Academia2026!\n');
     process.exit(0);
 
   } catch (err) {

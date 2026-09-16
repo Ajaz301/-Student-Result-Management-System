@@ -407,21 +407,6 @@ document.querySelectorAll('.filter-notice-btn').forEach(btn => {
    ADMIN LOGIN FORM HANDLER & CONTROLS
    ========================================== */
 
-// Auto-fill Demo Credentials Button
-const autoFillBtn = document.getElementById('btn-autofill-admin');
-if (autoFillBtn) {
-  autoFillBtn.addEventListener('click', () => {
-    const userField = document.getElementById('login-username');
-    const passField = document.getElementById('login-password');
-    if (userField && passField) {
-      userField.value = 'admin';
-      passField.value = 'admin123';
-      showToast('Default credentials loaded: admin / admin123', 'info');
-      passField.focus();
-    }
-  });
-}
-
 // Show/Hide Password Toggle
 const togglePasswordBtn = document.getElementById('toggle-login-password');
 if (togglePasswordBtn) {

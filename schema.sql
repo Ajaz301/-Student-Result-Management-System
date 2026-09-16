@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS notices (
 
 -- Seed Admins
 INSERT INTO admins (username, password, name, email) 
-VALUES ('admin', 'admin123', 'School Administrator', 'admin@srms-edu.org');
+VALUES ('admin', 'Admin@Academia2026!', 'School Administrator', 'admin@srms-edu.org');
 
 -- Seed Classes (School + BCA 1st to 8th Semesters)
 INSERT INTO classes (name, section, semester, class_code) VALUES 

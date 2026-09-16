@@ -77,10 +77,10 @@ class FirebaseService {
 
       // 3. If collection is empty and default admin credentials used, auto-create default admin doc
       const countSnapshot = await this.db.collection(COLL.ADMINS).limit(1).get();
-      if (countSnapshot.empty && (cleanUser.toLowerCase() === 'admin' || cleanUser.toLowerCase() === 'admin@srms-edu.org') && cleanPass === 'admin123') {
+      if (countSnapshot.empty && (cleanUser.toLowerCase() === 'admin' || cleanUser.toLowerCase() === 'admin@srms-edu.org') && cleanPass === 'Admin@Academia2026!') {
         const newAdmin = {
           username: 'admin',
-          password: 'admin123',
+          password: 'Admin@Academia2026!',
           name: 'School Administrator',
           email: 'admin@srms-edu.org',
           created_at: new Date().toISOString()

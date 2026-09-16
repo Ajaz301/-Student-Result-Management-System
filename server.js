@@ -192,7 +192,7 @@ function seedInitialDemoData() {
   console.log("Seeding initial demo data to SQLite database...");
   sqliteDb.serialize(() => {
     sqliteDb.run(`INSERT INTO admins (username, password, name, email) 
-      VALUES ('admin', 'admin123', 'School Administrator', 'admin@srms-edu.org')`);
+      VALUES ('admin', 'Admin@Academia2026!', 'School Administrator', 'admin@srms-edu.org')`);
 
     sqliteDb.run(`INSERT INTO classes (name, section, semester, class_code) VALUES 
       ('Class 10', 'A', 'Semester 1', '10-A-SEM1'),
@@ -483,7 +483,7 @@ app.post('/api/auth/login', async (req, res) => {
           return res.json({ success: true, name: row.name, email: row.email, username: row.username });
         }
         // Check default demo credentials
-        if ((cleanUsername.toLowerCase() === 'admin' || cleanUsername.toLowerCase() === 'admin@srms-edu.org') && cleanPassword === 'admin123') {
+        if ((cleanUsername.toLowerCase() === 'admin' || cleanUsername.toLowerCase() === 'admin@srms-edu.org') && cleanPassword === 'Admin@Academia2026!') {
           return res.json({ success: true, name: 'School Administrator', email: 'admin@srms-edu.org', username: 'admin' });
         }
         return res.status(401).json({ success: false, message: 'Invalid administrator username or password.' });
@@ -492,7 +492,7 @@ app.post('/api/auth/login', async (req, res) => {
   }
 
   // 3. Fallback to default demo credentials
-  if ((cleanUsername.toLowerCase() === 'admin' || cleanUsername.toLowerCase() === 'admin@srms-edu.org') && cleanPassword === 'admin123') {
+  if ((cleanUsername.toLowerCase() === 'admin' || cleanUsername.toLowerCase() === 'admin@srms-edu.org') && cleanPassword === 'Admin@Academia2026!') {
     return res.json({ success: true, name: 'School Administrator', email: 'admin@srms-edu.org', username: 'admin' });
   }
 
