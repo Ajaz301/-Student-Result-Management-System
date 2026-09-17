@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "start:firebase": "node server.js --firebase",
-    "seed:firebase": "node seed-firebase.js"
+    "seed:firebase": "node seed-firebase.js",
+    "password:firebase": "node update-firebase-password.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

@@ -7,9 +7,9 @@
 // Global State
 let currentAdminSession = false;
 try {
-  currentAdminSession = sessionStorage.getItem('srms_admin_active') === 'true';
+  currentAdminSession = sessionStorage.getItem('srms_admin_active') === 'true' || localStorage.getItem('srms_admin_active') === 'true';
 } catch (e) {
-  console.warn("sessionStorage is restricted in this context.", e);
+  console.warn("Storage is restricted in this context.", e);
 }
 let confirmCallback = null;
 
@@ -192,10 +192,13 @@ function setupNavigation() {
     if (currentAdminSession) {
       try {
         sessionStorage.removeItem('srms_admin_active');
+        localStorage.removeItem('srms_admin_active');
       } catch (e) {
-        console.warn("sessionStorage is restricted in this context.", e);
+        console.warn("Storage is restricted in this context.", e);
       }
       currentAdminSession = false;
+      updateHeaderAuthButton();
+      updatePortalLoginButton();
       showToast('Logged out of Admin space successfully.');
       showView('view-home');
     } else {
@@ -436,13 +439,20 @@ document.getElementById('admin-login-form').addEventListener('submit', async (e)
   const isSuccess = typeof result === 'object' ? result.success : !!result;
 
   if (isSuccess) {
+    const rememberMe = document.getElementById('login-remember-me')?.checked;
     try {
       sessionStorage.setItem('srms_admin_active', 'true');
+      if (rememberMe) {
+        localStorage.setItem('srms_admin_active', 'true');
+      } else {
+        localStorage.removeItem('srms_admin_active');
+      }
     } catch (e) {
-      console.warn("sessionStorage is restricted in this context.", e);
+      console.warn("Storage is restricted in this context.", e);
     }
     currentAdminSession = true;
     updatePortalLoginButton();
+    updateHeaderAuthButton();
     
     // Reset forms
     document.getElementById('admin-login-form').reset();

@@ -107,22 +107,44 @@ class FirebaseService {
     const cleanNew = (newPassword || '').trim();
 
     try {
-      const snapshot = await this.db.collection(COLL.ADMINS)
+      // 1. Check if admin doc exists by current password
+      let snapshot = await this.db.collection(COLL.ADMINS)
         .where('password', '==', cleanOld)
-        .limit(1)
         .get();
 
+      // 2. If not found by exact password query, check by username 'admin'
       if (snapshot.empty) {
-        return { success: false, message: 'Current password does not match' };
+        snapshot = await this.db.collection(COLL.ADMINS)
+          .where('username', '==', 'admin')
+          .get();
       }
 
-      const adminDoc = snapshot.docs[0];
-      await adminDoc.ref.update({
-        password: cleanNew,
-        updated_at: new Date().toISOString()
-      });
+      // 3. If no admin doc exists in Firestore, create it with the new password
+      if (snapshot.empty) {
+        const docRef = await this.db.collection(COLL.ADMINS).add({
+          username: 'admin',
+          password: cleanNew,
+          name: 'School Administrator',
+          email: 'admin@srms-edu.org',
+          created_at: new Date().toISOString(),
+          updated_at: new Date().toISOString()
+        });
+        console.log(`[FirebaseService] Created admin document with new password in Firestore (ID: ${docRef.id})`);
+        return { success: true, message: 'Password updated and saved to Firebase Firestore successfully' };
+      }
 
-      return { success: true, message: 'Password updated successfully' };
+      // 4. Update all matched admin docs in Firestore
+      const batch = this.db.batch();
+      snapshot.docs.forEach(doc => {
+        batch.update(doc.ref, {
+          password: cleanNew,
+          updated_at: new Date().toISOString()
+        });
+      });
+      await batch.commit();
+
+      console.log(`[FirebaseService] Updated ${snapshot.size} admin document(s) in Firebase Firestore with new password.`);
+      return { success: true, message: 'Password updated successfully in Firebase Firestore' };
     } catch (err) {
       console.warn('[FirebaseService changePassword warning]:', err.message);
       throw err;

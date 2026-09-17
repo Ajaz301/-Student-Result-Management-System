@@ -301,7 +301,14 @@
               </div>
             </div>
             
-            <div style="margin-top: 2rem; display: flex; gap: 1rem;">
+            <div style="margin-top: 1rem; display: flex; align-items: center; justify-content: space-between;">
+              <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.85rem; color: var(--text-secondary); cursor: pointer; user-select: none;">
+                <input type="checkbox" id="login-remember-me" checked style="width: 16px; height: 16px; accent-color: #6366f1; cursor: pointer;">
+                <span>Stay signed in on this device (No need to re-login daily)</span>
+              </label>
+            </div>
+            
+            <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
               <button type="button" class="btn btn-secondary" style="flex: 1;" id="login-btn-back">Cancel</button>
               <button type="submit" class="btn btn-admin" style="flex: 2;">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
